@@ -8,7 +8,14 @@ bool in_array(char *haystack[], size_t sz, char *needle);
 
 int main(void)
 {
-	char *haystack[] = {"Goodbye", "and", "thanks", "for", "all", "the", "fish"};
+	char word1[] = "Goodbye";
+	char word2[] = "and";
+	char word3[] = "thanks";
+	char word4[] = "for";
+	char word5[] = "all";
+	char word6[] = "the";
+	char word7[] = "fish";
+	char *haystack[] = {word1, word2, word3, word4, word5, word6, word7};
 
 	size_t size_of_hay = 7;
 
