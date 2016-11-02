@@ -1,54 +1,50 @@
+
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sysexits.h>
-#include <stdbool.h>
 
 char *get_movie(void);
 
 int main(void)
 {
-	size_t list_len = 1;
-	char **movie_list = malloc(list_len * sizeof(*movie_list));
-
-	if(!movie_list){
+	size_t last_idx = 0;
+	char **movie_list = malloc((1 + last_idx) * sizeof(*movie_list));
+	if(!movie_list) {
 		return EX_OSERR;
 	}
-	
-	do{
-		printf("Enter a movie title: ");
-		char *movie = get_movie();
-		movie_list[list_len - 1] = movie;
-		
-		++list_len;
 
-		//WRONG BAD BADONG
-		//movie_list = realloc(movie_list, list_len * sizeof(*movie_list));
+	movie_list[0] = NULL;
 
-		void *tmp = realloc(movie_list, list_len * sizeof(*movie_list));
-		if(tmp){
+	do {
+		++last_idx;
+		void *tmp = realloc(movie_list, (1 + last_idx) * sizeof(*movie_list));
+		if(tmp) {
 			movie_list = tmp;
-		} 
-		else{
-			//What to do when shit fails.
+		} else {
 			break;
 		}
-		//Gives programmer a thing to print to
-		movie_list[list_len - 1] = NULL;
-	} while (movie_list[list_len - 2] && strlen(movie_list[list_len-2]) > 1);
+
+		movie_list[last_idx] = NULL;
+
+		printf("Enter a movie title: ");
+		char *movie = get_movie();
+		movie_list[last_idx - 1] = movie;
+
+	} while(movie_list[last_idx - 1] && strlen(movie_list[last_idx - 1]) > 1);
 
 	char **curr_movie = movie_list;
-	while(*curr_movie){
+	while(*curr_movie) {
 		printf("%s", *curr_movie);
+		free(*curr_movie);
 		++curr_movie;
 	}
 
 	free(movie_list);
 }
 
-
-//Returns a newly malloc()'d section of memory that much be free()'d 
-// By the caller
+// Returns a newly-malloc()d section of memory that must be free()d
+// by the caller
 char *get_movie(void)
 {
 	char buf[64];
@@ -57,10 +53,11 @@ char *get_movie(void)
 	size_t sz = strlen(buf) + 1;
 
 	char *movie = malloc(sz);
-	if(!movie){
+	if(!movie) {
 		return NULL;
 	}
 
+	buf[strlen(buf) - 1 ] = '\0';
 	strncpy(movie, buf, sz);
 
 	return movie;
