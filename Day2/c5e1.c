@@ -5,6 +5,9 @@
 
 enum {NUM_OF_WORDS = 256};
 
+	char *words[NUM_OF_WORDS];
+	int counts[NUM_OF_WORDS];
+
 int main(int argc, char *argv[])
 {
 	if(argc != 2){
@@ -19,16 +22,29 @@ int main(int argc, char *argv[])
 		return EX_NOINPUT;
 	}
 
-	char *words[NUM_OF_WORDS];
-	int counts[NUM_OF_WORDS];
-	
-	int c;
-	while(c != EOF){
-			c = fgetc(fp);
-			printf("%c\n", c);	
+	char buf[256];
+
+	fgets(buf, sizeof(buf), fp);
+
+	char *word = strtok(buf, " \n");
+
+	while(word) {
+	printf("%s\n", word);
+	word = strtok(NULL, " \n");
+
 	}
 
+
+
+	// Prints out all word frequencies
+	for(size_t n = 0; n < NUM_OF_WORDS; ++n){
+		if(!words[n]){
+			break;
+		}
+		printf("%s: %d\n", words[n], counts[n]);
+	}
 	fclose(fp);
+
 
 }
 
