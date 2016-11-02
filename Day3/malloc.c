@@ -1,22 +1,25 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sysexits.h>
 
 char *get_movie(void);
 
 int main(void)
 {
-	printf("Enter a movie title: ");
-	char *first = get_movie();
+	char **movie_list = malloc(1 * sizeof(*movie_list));
 
-	printf("Enter a movie title: ");
-	char *second = get_movie();
+	if(!movie_list){
+		return EX_OSERR;
+	}
+	
 
-	printf("%s", first);
-	printf("%s", second);
-
-	free(first);
-	free(second);
+		printf("Enter a movie title: ");
+		char *movie = get_movie();
+		movie_list[0] = movie;
+	
+	free(movie);
+	free(movie_list);
 }
 
 
