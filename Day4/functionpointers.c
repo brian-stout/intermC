@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int prod(int, int);
 int add(int, int);
@@ -10,11 +11,17 @@ int main(void)
 	printf("%d\n", add(3, 5));
 	printf("%d\n", sub(3, 5));
 
-	int (*arbitrary_func)(int, int);
+	int value = 0;
 
-	arbitrary_func = prod;
+	int (*allfuncs[])(int, int) = {prod, add, sub};
 
-	int value = arbitrary_func(3, 5);
+
+	// THREE FUNCTIONS IN THE ARRAY
+	for(size_t n = 0; n < 3; ++n){
+		int (*curr_func)(int, int);
+		curr_func = allfuncs[n];
+		value += curr_func(3,5);
+	}
 
 	printf("%d\n", value);
 }
